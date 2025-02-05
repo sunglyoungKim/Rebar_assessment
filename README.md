@@ -15,6 +15,7 @@ please use conda with environment.yml
 
 
 Example of usage:
+
  $python main.py --config rebar_gen/rebar.py --num_processes 3 --log_period 10
  
  The data is generated in the rebar_gen/output directory. A labels.json file contains all annotations in follow format:
