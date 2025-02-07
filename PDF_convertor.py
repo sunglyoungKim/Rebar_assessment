@@ -11,7 +11,7 @@ def PDF_convert(PDF_path, dst_path):
     
         for i in range(len(pdf)):
             page = pdf[i]
-            image = page.render(scale=1).to_pil()
+            image = page.render(scale=3).to_pil()
             image.save(f"{dst_path}/{pdf_file.stem}_{i:04d}.jpg")
 
     return

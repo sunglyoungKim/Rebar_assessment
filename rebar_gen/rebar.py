@@ -33,21 +33,10 @@ font_cfg = dict(
 perspective_transform = NormPerspectiveTransformCfg(20, 20, 1.5)
 
 
-def get_char_corpus():
-    return CharCorpus(
-        CharCorpusCfg(
-            text_paths=[TEXT_DIR / "chn_text.txt", TEXT_DIR / "eng_text.txt"],
-            filter_by_chars=True,
-            chars_file=CHAR_DIR / "chn.txt",
-            length=(5, 10),
-            char_spacing=(-0.3, 1.3),
-            **font_cfg
-        ),
-    )
 
 
 def base_cfg(
-    name: str, corpus,  n_image = 10, corpus_effects=None, layout_effects=None, layout=None, gray=True
+    name: str, corpus,  n_image = 100, corpus_effects=None, layout_effects=None, layout=None, gray=True
 ):
     return GeneratorCfg(
         num_image=n_image,
@@ -67,7 +56,7 @@ def base_cfg(
 def rebar_vertical_data():
     return base_cfg(
         name= inspect.currentframe().f_code.co_name,
-        n_image = 100,
+        n_image = 10000, # change the number of synthetic datagen
         corpus=EnumCorpus(
             EnumCorpusCfg(
                 text_paths=[TEXT_DIR / "rebar_data.txt"],
@@ -80,14 +69,14 @@ def rebar_vertical_data():
         corpus_effects = Effects(
             [
                 Line(p=0.5,line_pos_p=(0.25,0.25,0.25,0.25,0,0,0,0,0,0) ,color_cfg=FixedTextColorCfg()),
-                OneOf([DropoutRand(), DropoutVertical()]),
+                OneOf([DropoutRand(), DropoutVertical(), DropoutHorizontal()]),
             ]),
     )
     
 def rebar_data():
     return base_cfg(
         name= inspect.currentframe().f_code.co_name,
-        n_image = 100,
+        n_image = 10000, # change the number of synthetic datagen
         corpus=EnumCorpus(
             EnumCorpusCfg(
                 text_paths=[TEXT_DIR / "rebar_data.txt"],
@@ -99,7 +88,7 @@ def rebar_data():
         corpus_effects = Effects(
             [
                 Line(p=0.5,line_pos_p=(0.25,0.25,0.25,0.25,0,0,0,0,0,0) ,color_cfg=FixedTextColorCfg()),
-                OneOf([DropoutRand(), DropoutVertical()]),
+                OneOf([DropoutRand(), DropoutVertical(), DropoutHorizontal()]),
             ]),
     )
 
