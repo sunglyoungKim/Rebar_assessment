@@ -1,0 +1,22 @@
+﻿Generate Synthetic Dataset for Engineering Drawings
+
+* I have made the decision to utilize the Oh-My-OCR text renderer to generate synthetic datasets instead of developing a text rendering solution from scratch. This tool meets my requirements for creating diverse corpora that include alphanumeric strings, vertical and horizontal text orientations, underlined text, and text overlaid on busy backgrounds or within icons. One of the standout features of the “text renderer” is its modular architecture, which separates corpus generation, visual effects, and layout design. This structure effectively addresses all the synthetic data needs for my project.
+
+* In the realm of Optical Character Recognition (OCR), most models operate in two distinct phases: the initial phase focuses on locating the text within images, while the subsequent phase involves recognizing the text. For my work, I have chosen to concentrate on text recognition specifically, as the text location detection process requires a different dataset format. Also, I don’t have a suitable text locator model yet. 
+
+* For the dataset, I have selected specific parameters to fine-tune the text generation process. These parameters include font sizes ranging from 40 to 55, options for sideways text orientation, a curated list of fonts, and margins that define the space for the top, bottom, left, and right edges of the text. Additionally, I will randomly drop some pixels from the text strings and introduce vertical or horizontal line drops to increase variability.
+
+* The ground truth labels for this project are formatted as an LMDB dataset, which is the standard format used for both PaddleOCR and mmOCR applications. While I have been manually clipping the background images used in the datasets, I believe we could streamline this process significantly through the development of an effective documentation layout detector, thereby automating the clipping step.
+
+* As part of my workflow, I have implemented a pipeline that includes 10 distinct string generation functions. These functions are based on my observations from the engineering dataset, and I remain open to creating additional functions if I encounter new string types that are not adequately covered.
+
+* For your reference, please consult the `generate_text_candidate.ipynb` file, which details these functions. Additionally, I have identified a total of 101 different font types suitable for English text generation. Should we find that the fine-tuned OCR model struggles with a real-world dataset, we can easily expand the font selection. If we add new fonts to the predefined font directory located at `/rebar_gen/font`, it is essential to run the `Font_list.ipynb` file to refresh the `font_list.txt` with the updates.
+
+* The code is implemented using multiprocessing, achieving 200 images per second with three processes on my local computer.
+
+* Lastly, to convert PDF files into image formats required for processing, please utilize the `PDF_convertor.py` file, which facilitates this conversion efficiently.
+   * The python file needs PDF_file path and destination Path arguments
+* Please go to line number 59 and 79 at rebar_gen/rebar.py to change the number of synthetic text image
+* Run this commend
+$python main.py --config rebar_gen/rebar.py --num_processes 3 --log_period 10
+* The output will be saved at rebar_gen/output/
